@@ -6,6 +6,40 @@ const clientId = "9r6z4p0jcomcdydex394t2rpnugsqy";
 
 import './App.css'
 
+/*  Taken from https://stackoverflow.com/a/5663611
+ *  Return a date string as yyyymmddThhmmssZ
+ *  in UTC.
+ *  Use supplied date object or, if no
+ *  object supplied, return current time
+ */
+var dateToUTCString = (function () {
+
+  // Add leading zero to single digit numbers
+  function addZ(n) {
+    return (n<10)?'0'+n:''+n;
+  }
+
+  return function(d) {
+
+    // If d not supplied, use current date
+    var d = d || new Date();
+
+    return d.getUTCFullYear() + '-' +
+           addZ(d.getUTCMonth() + 1) + '-' +
+           addZ(d.getUTCDate()) +
+           'T' +
+           addZ(d.getUTCHours()) + ":" +
+           addZ(d.getUTCMinutes()) + ":" +
+           addZ(d.getUTCSeconds()) +
+           'Z';
+  }
+}());
+
+function formatAsRFC3339(s) {
+  var b = s.split(/[\/:]/);
+  return b[2] + b[1] + b[0] + 'T' + b[3] + b[4] + '00' + 'Z'
+}
+
 export default class App extends React.Component{
     constructor(props){
         super(props)
@@ -15,12 +49,19 @@ export default class App extends React.Component{
         this.twitch = window.Twitch ? window.Twitch.ext : null
         this.state={
             finishedLoading:false,
-            theme:'dark',
+            theme:'light' ,
             isVisible:true
         }
 
         this.clips = [];
         this.broadcasterName = "";
+
+        this.yesterdayDate = new Date();
+        this.yesterdayDate.setDate(this.yesterdayDate.getDate() - 1);
+        this.yesterdayDate = dateToUTCString(this.yesterdayDate);
+
+        this.todayDate = new Date();
+        this.todayDate = dateToUTCString(this.todayDate);
     }
 
     contextUpdate(context, delta){
@@ -53,7 +94,7 @@ export default class App extends React.Component{
                 let broadcaster_id = 37402112;
 
 
-                fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=${broadcaster_id}&first=${numClips}`, {
+                fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=${broadcaster_id}&first=${numClips}&started_at=${this.yesterdayDate}&ended_at=${this.todayDate}`, {
                       method: "GET",
                       headers: {
                         "Client-ID": clientId
@@ -62,7 +103,10 @@ export default class App extends React.Component{
                   .then(results => {
                     return results.json();
                   }).then(json => {
-                    this.broadcasterName = json.data[0].broadcaster_name;
+                    this.twitch.rig.log(json);
+                    if (json.data.length) {
+                      this.broadcasterName = json.data[0].broadcaster_name;
+                    }
 
                     for (let clip of json.data) {
                       this.clips.push(clip);
