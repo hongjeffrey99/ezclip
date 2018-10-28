@@ -7,7 +7,9 @@ export default class App extends React.Component{
     constructor(props){
         super(props)
         this.Authentication = new Authentication()
-
+        console.log('hi')
+        console.log(this.Authentication.getUserId())
+        console.log(this.Authentication.channelId)
         //if the extension is running on twitch or dev rig, set the shorthand here. otherwise, set to null. 
         this.twitch = window.Twitch ? window.Twitch.ext : null
         this.state={
