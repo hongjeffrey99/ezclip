@@ -1,6 +1,8 @@
 import React from 'react'
 import Authentication from '../../util/Authentication/Authentication'
 
+const jwt = require('jsonwebtoken')
+
 import './App.css'
 
 export default class App extends React.Component{
@@ -8,11 +10,11 @@ export default class App extends React.Component{
         super(props)
         this.Authentication = new Authentication()
 
-        //if the extension is running on twitch or dev rig, set the shorthand here. otherwise, set to null. 
+        //if the extension is running on twitch or dev rig, set the shorthand here. otherwise, set to null.
         this.twitch = window.Twitch ? window.Twitch.ext : null
         this.state={
             finishedLoading:false,
-            theme:'light',
+            theme:'dark',
             isVisible:true
         }
     }
@@ -35,8 +37,14 @@ export default class App extends React.Component{
 
     componentDidMount(){
         if(this.twitch){
+            console.log(this.twitch)
             this.twitch.onAuthorized((auth)=>{
                 this.Authentication.setToken(auth.token, auth.userId)
+                this.twitch.rig.log(`This is the ID: ${auth.channelId}.`);
+                
+                let decoded = jwt.decode(auth.token);
+                this.twitch.rig.log(decoded);
+
                 if(!this.state.finishedLoading){
                     // if the component hasn't finished loading (as in we've not set up after getting a token), let's set it up now.
 
@@ -49,7 +57,7 @@ export default class App extends React.Component{
 
             this.twitch.listen('broadcast',(target,contentType,body)=>{
                 this.twitch.rig.log(`New PubSub message!\n${target}\n${contentType}\n${body}`)
-                // now that you've got a listener, do something with the result... 
+                // now that you've got a listener, do something with the result...
 
                 // do something...
 
@@ -70,13 +78,13 @@ export default class App extends React.Component{
             this.twitch.unlisten('broadcast', ()=>console.log('successfully unlistened'))
         }
     }
-    
+
     render(){
         if(this.state.finishedLoading && this.state.isVisible){
             return (
                 <div className="App">
                     <div className={this.state.theme === 'light' ? 'App-light' : 'App-dark'} >
-                        <p>Hello world!</p>
+                        <p>Hello world! This is a test!</p>
                         <p>My token is: {this.Authentication.state.token}</p>
                         <p>My opaque ID is {this.Authentication.getOpaqueId()}.</p>
                         <div>{this.Authentication.isModerator() ? <p>I am currently a mod, and here's a special mod button <input value='mod button' type='button'/></p>  : 'I am currently not a mod.'}</div>
