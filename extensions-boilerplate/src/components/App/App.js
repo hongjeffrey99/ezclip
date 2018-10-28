@@ -103,7 +103,6 @@ export default class App extends React.Component{
                   .then(results => {
                     return results.json();
                   }).then(json => {
-                    this.twitch.rig.log(json);
                     if (json.data.length) {
                       this.broadcasterName = json.data[0].broadcaster_name;
                     }
