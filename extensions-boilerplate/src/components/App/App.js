@@ -151,6 +151,15 @@ export default class App extends React.Component{
                     <div className={this.state.theme === 'light' ? 'App-light' : 'App-dark'} >
                         <p>Hello world! This is a test!</p>
 
+                        {/*
+                          * BUG:
+                          * This creates images that you can right click
+                          * and open in a new tab (because of target="_blank")
+                          * but you cannot left click to open them.
+                          * If I remove target="_blank", then left clicking the
+                          * image breaks the extension altogether.
+                          * Feel free to try it yourself.
+                          */}
                         <div>{images.map(image => <a href={image.url} target="_blank"><img src={image.thumbnail_url} alt="oops"></img></a>)}</div>
 
 
