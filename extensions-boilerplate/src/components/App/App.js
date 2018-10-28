@@ -68,7 +68,8 @@ export default class App extends React.Component{
                       this.clips.push(clip);
                       //let parsed = json.parse(clip);
                     }
-                    this.twitch.rig.log(this.clips);
+                    // this.twitch.rig.log(this.clips);
+                    this.forceUpdate();
                   })
 
                 //
@@ -124,6 +125,7 @@ export default class App extends React.Component{
             this.twitch.onContext((context,delta)=>{
                 this.contextUpdate(context,delta)
             })
+
         }
     }
 
@@ -134,12 +136,22 @@ export default class App extends React.Component{
     }
 
     render(){
-        if(this.state.finishedLoading && this.state.isVisible){
-            return (
+
+      if(this.state.finishedLoading && this.state.isVisible){
+        var images = [];
+        if (this.clips.length) {
+          for (let clip of this.clips) {
+            images.push(clip);
+          }
+          //this.twitch.rig.log(this.clips.length);
+        }
+
+        return (
                 <div className="App">
                     <div className={this.state.theme === 'light' ? 'App-light' : 'App-dark'} >
                         <p>Hello world! This is a test!</p>
 
+                        <div>{images.map(image => <a href={image.url} target="_blank"><img src={image.thumbnail_url} alt="oops"></img></a>)}</div>
 
 
                         {/*}
