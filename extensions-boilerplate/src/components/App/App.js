@@ -37,11 +37,54 @@ export default class App extends React.Component{
 
     componentDidMount(){
         if(this.twitch){
-            console.log(this.twitch)
+            console.log('hi');
             this.twitch.onAuthorized((auth)=>{
                 this.Authentication.setToken(auth.token, auth.userId)
                 this.twitch.rig.log(`This is the ID: ${auth.channelId}.`);
-                
+
+                let numClips = 20;
+                let clipURLs = [];
+
+                // fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=37402112&first=${numClips}`, {
+                //       method: "GET",
+                //       headers: {
+                //         "Client-ID": "9r6z4p0jcomcdydex394t2rpnugsqy"
+                //       }
+                //     })
+                //   .then(results => {
+                //     return results.json();
+                //   }).then(json => {
+                //     //let clipURLs = [];
+                //     for (let clip of json.data) {
+                //       clipURLs.push(clip.url);
+                //       this.twitch.rig.log(clip.url);
+                //       //let parsed = json.parse(clip);
+                //     }
+                //     //this.twitch.rig.log(clipURLs);
+                //   })
+
+                async function getClips() {
+                  let response = fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=37402112&first=${numClips}`, {
+                    method: "GET",
+                    headers: {
+                      "Client-ID": "9r6z4p0jcomcdydex394t2rpnugsqy"
+                    }
+                  });
+
+                  let json = await response.json();
+                  return json;
+                }
+
+
+                getClips().then(json => {
+                  for (let clip of json) {
+                    clipURLs.push(clip.url);
+                  }
+                });
+
+                this.twitch.rig.log(clipURLs);
+
+                //
                 let decoded = jwt.decode(auth.token);
                 this.twitch.rig.log(decoded);
 

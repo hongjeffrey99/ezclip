@@ -34,7 +34,8 @@
   "dependencies": {
     "jsonwebtoken": "^8.3.0",
     "react": "^16.3.2",
-    "react-dom": "^16.3.2"
+    "react-dom": "^16.3.2",
+    "watchman": "^1.0.0"
   },
   "jest": {
     "setupFiles": [
