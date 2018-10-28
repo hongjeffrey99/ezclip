@@ -2,6 +2,7 @@ import React from 'react'
 import Authentication from '../../util/Authentication/Authentication'
 
 const jwt = require('jsonwebtoken')
+const clientId = "9r6z4p0jcomcdydex394t2rpnugsqy";
 
 import './App.css'
 
@@ -19,6 +20,7 @@ export default class App extends React.Component{
         }
 
         this.clips = [];
+        this.broadcasterName = "";
     }
 
     contextUpdate(context, delta){
@@ -45,30 +47,27 @@ export default class App extends React.Component{
                 //this.twitch.rig.log(`This is the ID: ${auth.channelId}.`);
 
                 let numClips = 5;
-                //let clipURLs = [];
 
-                // var printArray = () => {
-                //   this.twitch.rig.log("print")
-                //   this.twitch.rig.log(clipURLs);
-                // }
+                // TODO: RESET TO CHANNEL_ID WHEN LAUNCH
+                // This is a manual test for Shroud
+                let broadcaster_id = 37402112;
 
-                fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=37402112&first=${numClips}`, {
+
+                fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=${broadcaster_id}&first=${numClips}`, {
                       method: "GET",
                       headers: {
-                        "Client-ID": "9r6z4p0jcomcdydex394t2rpnugsqy"
+                        "Client-ID": clientId
                       }
                     })
                   .then(results => {
                     return results.json();
                   }).then(json => {
-                    // let clipURLs = [];
+                    this.broadcasterName = json.data[0].broadcaster_name;
 
                     for (let clip of json.data) {
-                      // this.twitch.rig.log('put');
                       this.clips.push(clip);
-                      //let parsed = json.parse(clip);
                     }
-                    // this.twitch.rig.log(this.clips);
+
                     this.forceUpdate();
                   })
 
@@ -98,7 +97,7 @@ export default class App extends React.Component{
 
                 //
                 let decoded = jwt.decode(auth.token);
-                //this.twitch.rig.log(decoded);
+                this.twitch.rig.log(decoded);
 
                 if(!this.state.finishedLoading){
                     // if the component hasn't finished loading (as in we've not set up after getting a token), let's set it up now.
@@ -149,7 +148,7 @@ export default class App extends React.Component{
         return (
                 <div className="App">
                     <div className={this.state.theme === 'light' ? 'App-light' : 'App-dark'} >
-                        <p>Hello world! This is a test!</p>
+                        <p>{this.broadcasterName} clips!</p>
 
                         {/*
                           * BUG:
