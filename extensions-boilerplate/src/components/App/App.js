@@ -17,6 +17,8 @@ export default class App extends React.Component{
             theme:'dark',
             isVisible:true
         }
+
+        this.clips = [];
     }
 
     contextUpdate(context, delta){
@@ -40,53 +42,62 @@ export default class App extends React.Component{
             console.log('hi');
             this.twitch.onAuthorized((auth)=>{
                 this.Authentication.setToken(auth.token, auth.userId)
-                this.twitch.rig.log(`This is the ID: ${auth.channelId}.`);
+                //this.twitch.rig.log(`This is the ID: ${auth.channelId}.`);
 
-                let numClips = 20;
-                let clipURLs = [];
+                let numClips = 5;
+                //let clipURLs = [];
 
-                // fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=37402112&first=${numClips}`, {
-                //       method: "GET",
-                //       headers: {
-                //         "Client-ID": "9r6z4p0jcomcdydex394t2rpnugsqy"
-                //       }
-                //     })
-                //   .then(results => {
-                //     return results.json();
-                //   }).then(json => {
-                //     //let clipURLs = [];
-                //     for (let clip of json.data) {
-                //       clipURLs.push(clip.url);
-                //       this.twitch.rig.log(clip.url);
-                //       //let parsed = json.parse(clip);
-                //     }
-                //     //this.twitch.rig.log(clipURLs);
-                //   })
+                // var printArray = () => {
+                //   this.twitch.rig.log("print")
+                //   this.twitch.rig.log(clipURLs);
+                // }
 
-                async function getClips() {
-                  let response = fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=37402112&first=${numClips}`, {
-                    method: "GET",
-                    headers: {
-                      "Client-ID": "9r6z4p0jcomcdydex394t2rpnugsqy"
+                fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=37402112&first=${numClips}`, {
+                      method: "GET",
+                      headers: {
+                        "Client-ID": "9r6z4p0jcomcdydex394t2rpnugsqy"
+                      }
+                    })
+                  .then(results => {
+                    return results.json();
+                  }).then(json => {
+                    // let clipURLs = [];
+
+                    for (let clip of json.data) {
+                      // this.twitch.rig.log('put');
+                      this.clips.push(clip);
+                      //let parsed = json.parse(clip);
                     }
-                  });
+                    this.twitch.rig.log(this.clips);
+                  })
 
-                  let json = await response.json();
-                  return json;
-                }
+                //
+                // async function getClips() {
+                //   let response = await fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=37402112&first=${numClips}`, {
+                //     method: "GET",
+                //     headers: {
+                //       "Client-ID": "9r6z4p0jcomcdydex394t2rpnugsqy"
+                //     }
+                //   });
+                //
+                //   let json = response.json();
+                //   return json;
+                // }
+                //
+                //
+                // Promise.all([getClips()]).then(json => {
+                //   this.twitch.rig.log(json);
+                //   for (let clip of json) {
+                //     clipURLs.push(clip.url);
+                //   }
+                // });
 
+                // this.twitch.rig.log(clipURLs);
 
-                getClips().then(json => {
-                  for (let clip of json) {
-                    clipURLs.push(clip.url);
-                  }
-                });
-
-                this.twitch.rig.log(clipURLs);
 
                 //
                 let decoded = jwt.decode(auth.token);
-                this.twitch.rig.log(decoded);
+                //this.twitch.rig.log(decoded);
 
                 if(!this.state.finishedLoading){
                     // if the component hasn't finished loading (as in we've not set up after getting a token), let's set it up now.
@@ -128,10 +139,15 @@ export default class App extends React.Component{
                 <div className="App">
                     <div className={this.state.theme === 'light' ? 'App-light' : 'App-dark'} >
                         <p>Hello world! This is a test!</p>
+
+
+
+                        {/*}
                         <p>My token is: {this.Authentication.state.token}</p>
                         <p>My opaque ID is {this.Authentication.getOpaqueId()}.</p>
                         <div>{this.Authentication.isModerator() ? <p>I am currently a mod, and here's a special mod button <input value='mod button' type='button'/></p>  : 'I am currently not a mod.'}</div>
                         <p>I have {this.Authentication.hasSharedId() ? `shared my ID, and my user_id is ${this.Authentication.getUserId()}` : 'not shared my ID'}.</p>
+                        */}
                     </div>
                 </div>
             )
