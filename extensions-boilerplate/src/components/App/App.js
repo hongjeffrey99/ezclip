@@ -13,6 +13,7 @@ const jwt = require('jsonwebtoken')
 const clientId = "9r6z4p0jcomcdydex394t2rpnugsqy";
 
 import './App.css'
+import ezclap from '../../../assets/ezclap.png'
 
 var dateToUTCString = (function () {
 
@@ -187,9 +188,7 @@ export default class App extends React.Component{
                 <div className="App">
                     <div className={this.state.theme === 'light' ? 'App-light' : 'App-dark'} >
 
-                        <h2><span id="ez">EZ</span>clips{'\uD83D\uDC4F'}</h2>
-                        <div></div>
-                        {/*<img src="../../../assets/clap.png" alt="hi"></img>*/}
+                        <h2><span id="ez">EZ</span>clips<img src={ezclap} alt="hi"></img></h2>
 
                         {/*
                           * BUG:
