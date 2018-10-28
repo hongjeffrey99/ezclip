@@ -58,7 +58,7 @@ module.exports = (_env,argv)=> {
           filename:entryPoints[name].outputHtml
         }))
       }
-    }    
+    }
   }
 
   let config={
@@ -80,11 +80,15 @@ module.exports = (_env,argv)=> {
           use: [ 'style-loader', 'css-loader' ]
         },
         {
-          test: /\.(jpe?g|png|gif|svg)$/i, 
+          test: /\.(jpe?g|png|gif|svg)$/i,
           loader: "file-loader",
           options:{
             name:"img/[name].[ext]"
           }
+        },
+        {
+          test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: 'file-loader'
         }
       ]
     },

@@ -1,5 +1,30 @@
+/* @font-face {
+  font-family: Twitch;
+  src: url('Twitchy.TV.ttf');
+} */
+
 .App {
     font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+
+    background-color: rgb(110, 64, 194);
+    border-radius: 50px;
+    overflow: visible;
+
+}
+
+.image {
+
+    width: 140px;
+
+}
+
+h1 {
+    font-family: Verdana;
+    color: white;
+
 }
 
 .App-light{

@@ -3,6 +3,35 @@ import Authentication from '../../util/Authentication/Authentication'
 
 import './App.css'
 
+/*  Taken from https://stackoverflow.com/a/5663611
+ *  Return a date string as yyyymmddThhmmssZ
+ *  in UTC.
+ *  Use supplied date object or, if no
+ *  object supplied, return current time
+ */
+var dateToUTCString = (function () {
+
+  // Add leading zero to single digit numbers
+  function addZ(n) {
+    return (n<10)?'0'+n:''+n;
+  }
+
+  return function(d) {
+
+    // If d not supplied, use current date
+    var d = d || new Date();
+
+    return d.getUTCFullYear() + '-' +
+           addZ(d.getUTCMonth() + 1) + '-' +
+           addZ(d.getUTCDate()) +
+           'T' +
+           addZ(d.getUTCHours()) + ":" +
+           addZ(d.getUTCMinutes()) + ":" +
+           addZ(d.getUTCSeconds()) +
+           'Z';
+  }
+}());
+
 export default class App extends React.Component{
     constructor(props){
         super(props)
@@ -12,9 +41,25 @@ export default class App extends React.Component{
         this.twitch = window.Twitch ? window.Twitch.ext : null
         this.state={
             finishedLoading:false,
+<<<<<<< HEAD
             theme:'light',
             isVisible:true
         }
+=======
+            theme:'light' ,
+            isVisible:true
+        }
+
+        this.clips = [];
+        this.broadcasterName = "";
+
+        this.yesterdayDate = new Date();
+        this.yesterdayDate.setDate(this.yesterdayDate.getDate() - 1);
+        this.yesterdayDate = dateToUTCString(this.yesterdayDate);
+
+        this.todayDate = new Date();
+        this.todayDate = dateToUTCString(this.todayDate);
+>>>>>>> 9b63d3367705fbe4f8b96e27d743ba23902e71fb
     }
 
     contextUpdate(context, delta){
@@ -37,6 +82,66 @@ export default class App extends React.Component{
         if(this.twitch){
             this.twitch.onAuthorized((auth)=>{
                 this.Authentication.setToken(auth.token, auth.userId)
+<<<<<<< HEAD
+=======
+                //this.twitch.rig.log(`This is the ID: ${auth.channelId}.`);
+
+                let numClips = 6;
+
+                // TODO: RESET TO CHANNEL_ID WHEN LAUNCH
+                // This is a manual test for Shroud
+                let broadcaster_id = 37402112;
+
+
+                fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=${broadcaster_id}&first=${numClips}&started_at=${this.yesterdayDate}&ended_at=${this.todayDate}`, {
+                      method: "GET",
+                      headers: {
+                        "Client-ID": clientId
+                      }
+                    })
+                  .then(results => {
+                    return results.json();
+                  }).then(json => {
+                    if (json.data.length) {
+                      this.broadcasterName = json.data[0].broadcaster_name;
+                    }
+
+                    for (let clip of json.data) {
+                      this.clips.push(clip);
+                    }
+
+                    this.forceUpdate();
+                  })
+
+                //
+                // async function getClips() {
+                //   let response = await fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=37402112&first=${numClips}`, {
+                //     method: "GET",
+                //     headers: {
+                //       "Client-ID": "9r6z4p0jcomcdydex394t2rpnugsqy"
+                //     }
+                //   });
+                //
+                //   let json = response.json();
+                //   return json;
+                // }
+                //
+                //
+                // Promise.all([getClips()]).then(json => {
+                //   this.twitch.rig.log(json);
+                //   for (let clip of json) {
+                //     clipURLs.push(clip.url);
+                //   }
+                // });
+
+                // this.twitch.rig.log(clipURLs);
+
+
+                //
+                let decoded = jwt.decode(auth.token);
+                this.twitch.rig.log(decoded);
+
+>>>>>>> 9b63d3367705fbe4f8b96e27d743ba23902e71fb
                 if(!this.state.finishedLoading){
                     // if the component hasn't finished loading (as in we've not set up after getting a token), let's set it up now.
 
@@ -76,7 +181,25 @@ export default class App extends React.Component{
             return (
                 <div className="App">
                     <div className={this.state.theme === 'light' ? 'App-light' : 'App-dark'} >
+<<<<<<< HEAD
                         <p>Hello world!</p>
+=======
+                        <h1><strong>{this.broadcasterName} clips!</strong></h1>
+
+                        {/*
+                          * BUG:
+                          * This creates images that you can right click
+                          * and open in a new tab (because of target="_blank")
+                          * but you cannot left click to open them.
+                          * If I remove target="_blank", then left clicking the
+                          * image breaks the extension altogether.
+                          * Feel free to try it yourself.
+                          */}
+                        <div>{images.map(image => <a href={image.url} target="_blank"><img src={image.thumbnail_url} alt="" class="image"></img></a>)}</div>
+
+
+                        {/*}
+>>>>>>> 9b63d3367705fbe4f8b96e27d743ba23902e71fb
                         <p>My token is: {this.Authentication.state.token}</p>
                         <p>My opaque ID is {this.Authentication.getOpaqueId()}.</p>
                         <div>{this.Authentication.isModerator() ? <p>I am currently a mod, and here's a special mod button <input value='mod button' type='button'/></p>  : 'I am currently not a mod.'}</div>
