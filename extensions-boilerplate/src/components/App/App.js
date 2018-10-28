@@ -148,7 +148,7 @@ export default class App extends React.Component{
         return (
                 <div className="App">
                     <div className={this.state.theme === 'light' ? 'App-light' : 'App-dark'} >
-                        <p>{this.broadcasterName} clips!</p>
+                        <h1>{this.broadcasterName} clips!</h1>
 
                         {/*
                           * BUG:
