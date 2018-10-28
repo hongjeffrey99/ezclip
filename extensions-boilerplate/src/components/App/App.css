@@ -29,22 +29,11 @@ h2 {
 
 #ez {
     color: rgb(79, 15, 160);
-    /* background-image: url('../../../assets/clap.png'); */
 }
 
-#ezclap {
-   background-image: url('../../../assets/clap.png');
-   background-size: 20px;
-   position: absolute;
-   top: 0px;
-   right: 15px;
-   height: 25px;
-   display: inline;
-}
-
-#ezclap.resize {
-  width: 30%;
-  height: auto;
+#nothing-here {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: 30px;
 }
 
 .App-light{

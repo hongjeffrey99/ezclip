@@ -14,6 +14,7 @@ const clientId = "9r6z4p0jcomcdydex394t2rpnugsqy";
 
 import './App.css'
 import ezclap from '../../../assets/ezclap.png'
+import notlikethis from '../../../assets/notlikethis.jpg'
 
 var dateToUTCString = (function () {
 
@@ -62,6 +63,8 @@ export default class App extends React.Component{
 
         this.todayDate = new Date();
         this.todayDate = dateToUTCString(this.todayDate);
+
+        this.notEnoughClips = true;
     }
 
     contextUpdate(context, delta){
@@ -84,14 +87,12 @@ export default class App extends React.Component{
         if(this.twitch){
             this.twitch.onAuthorized((auth)=>{
                 this.Authentication.setToken(auth.token, auth.userId)
-                //this.twitch.rig.log(`This is the ID: ${auth.channelId}.`);
 
                 let numClips = 6;
 
                 // TODO: RESET TO CHANNEL_ID WHEN LAUNCH
                 // This is a manual test for Shroud
-                let broadcaster_id = 37402112;
-
+                let broadcaster_id = auth.channelId;
 
                 fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=${broadcaster_id}&first=${numClips}&started_at=${this.yesterdayDate}&ended_at=${this.todayDate}`, {
                       method: "GET",
@@ -104,6 +105,7 @@ export default class App extends React.Component{
                   }).then(json => {
                     if (json.data.length) {
                       this.broadcasterName = json.data[0].broadcaster_name;
+                      this.notEnoughClips = false;
                     }
 
                     for (let clip of json.data) {
@@ -112,34 +114,6 @@ export default class App extends React.Component{
 
                     this.forceUpdate();
                   })
-
-                //
-                // async function getClips() {
-                //   let response = await fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=37402112&first=${numClips}`, {
-                //     method: "GET",
-                //     headers: {
-                //       "Client-ID": "9r6z4p0jcomcdydex394t2rpnugsqy"
-                //     }
-                //   });
-                //
-                //   let json = response.json();
-                //   return json;
-                // }
-                //
-                //
-                // Promise.all([getClips()]).then(json => {
-                //   this.twitch.rig.log(json);
-                //   for (let clip of json) {
-                //     clipURLs.push(clip.url);
-                //   }
-                // });
-
-                // this.twitch.rig.log(clipURLs);
-
-
-                //
-                // let decoded = jwt.decode(auth.token);
-                // this.twitch.rig.log(decoded);
 
                 if(!this.state.finishedLoading){
                     // if the component hasn't finished loading (as in we've not set up after getting a token), let's set it up now.
@@ -182,7 +156,6 @@ export default class App extends React.Component{
                 for (let clip of this.clips) {
                     images.push(clip);
                 }
-                //this.twitch.rig.log(this.clips.length);
             }
             return (
                 <div className="App">
@@ -190,18 +163,13 @@ export default class App extends React.Component{
 
                         <h2><span id="ez">EZ</span>clips<img src={ezclap} alt="hi"></img></h2>
 
-                        {/*
-                          * BUG:
-                          * This creates images that you can right click
-                          * and open in a new tab (because of target="_blank")
-                          * but you cannot left click to open them.
-                          * If I remove target="_blank", then left clicking the
-                          * image breaks the extension altogether.
-                          * Feel free to try it yourself.
-                          */}
                         <div id="logo-holder">{images.map(image => <a href={image.url} target="_blank" title={image.title}><img src={image.thumbnail_url} alt="" className="image"></img></a>)}</div>
 
-                        <div id="ezclap"></div>
+                        <div id="nothing-here">
+                          {this.notEnoughClips ? 'There doesn\'t seem to be anything here' : ''}
+                          {this.notEnoughClips ? <img src={notlikethis} alt="" width="100px" height="auto"></img> : ''}
+                        </div>
+
                     </div>
                 </div>
             )
