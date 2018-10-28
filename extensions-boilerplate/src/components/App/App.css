@@ -2,6 +2,25 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+body {
+
+    background-color: rgb(110, 64, 194);
+    border-radius: 50px;
+    overflow: visible;
+
+}
+
+.images {
+
+    width: 100px;
+
+}
+
+h1 {
+    color: white;
+
+}
+
 .App-light{
     color:#232127;
 }
