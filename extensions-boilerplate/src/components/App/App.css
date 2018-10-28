@@ -16,12 +16,13 @@ body {
 }
 
 .image {
-
-    width: 140px;
-
+    width: 135px;
+    border: 2px solid black;
+    margin: 1px;
+    border-radius: 2px;
 }
 
-h1 {
+h2 {
     font-family: Verdana;
     color: white;
 
@@ -34,3 +35,5 @@ h1 {
 .App-dark{
     color:#e5e3e8;
 }
+
+

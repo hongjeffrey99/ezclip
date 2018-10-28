@@ -9,6 +9,11 @@ import './App.css'
  *  Use supplied date object or, if no
  *  object supplied, return current time
  */
+const jwt = require('jsonwebtoken')
+const clientId = "9r6z4p0jcomcdydex394t2rpnugsqy";
+
+import './App.css'
+
 var dateToUTCString = (function () {
 
   // Add leading zero to single digit numbers
@@ -41,11 +46,8 @@ export default class App extends React.Component{
         this.twitch = window.Twitch ? window.Twitch.ext : null
         this.state={
             finishedLoading:false,
-<<<<<<< HEAD
             theme:'light',
-            isVisible:true
-        }
-=======
+            isVisible:true,
             theme:'light' ,
             isVisible:true
         }
@@ -59,7 +61,6 @@ export default class App extends React.Component{
 
         this.todayDate = new Date();
         this.todayDate = dateToUTCString(this.todayDate);
->>>>>>> 9b63d3367705fbe4f8b96e27d743ba23902e71fb
     }
 
     contextUpdate(context, delta){
@@ -82,8 +83,6 @@ export default class App extends React.Component{
         if(this.twitch){
             this.twitch.onAuthorized((auth)=>{
                 this.Authentication.setToken(auth.token, auth.userId)
-<<<<<<< HEAD
-=======
                 //this.twitch.rig.log(`This is the ID: ${auth.channelId}.`);
 
                 let numClips = 6;
@@ -141,7 +140,6 @@ export default class App extends React.Component{
                 let decoded = jwt.decode(auth.token);
                 this.twitch.rig.log(decoded);
 
->>>>>>> 9b63d3367705fbe4f8b96e27d743ba23902e71fb
                 if(!this.state.finishedLoading){
                     // if the component hasn't finished loading (as in we've not set up after getting a token), let's set it up now.
 
@@ -170,21 +168,25 @@ export default class App extends React.Component{
         }
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         if(this.twitch){
             this.twitch.unlisten('broadcast', ()=>console.log('successfully unlistened'))
         }
     }
     
-    render(){
+    render() {
         if(this.state.finishedLoading && this.state.isVisible){
+            var images = [];
+            if (this.clips.length) {
+                for (let clip of this.clips) {
+                    images.push(clip);
+                }
+                //this.twitch.rig.log(this.clips.length);
+            }
             return (
                 <div className="App">
                     <div className={this.state.theme === 'light' ? 'App-light' : 'App-dark'} >
-<<<<<<< HEAD
-                        <p>Hello world!</p>
-=======
-                        <h1><strong>{this.broadcasterName} clips!</strong></h1>
+                        <h2>EZclips!</h2>
 
                         {/*
                           * BUG:
@@ -195,15 +197,7 @@ export default class App extends React.Component{
                           * image breaks the extension altogether.
                           * Feel free to try it yourself.
                           */}
-                        <div>{images.map(image => <a href={image.url} target="_blank"><img src={image.thumbnail_url} alt="" class="image"></img></a>)}</div>
-
-
-                        {/*}
->>>>>>> 9b63d3367705fbe4f8b96e27d743ba23902e71fb
-                        <p>My token is: {this.Authentication.state.token}</p>
-                        <p>My opaque ID is {this.Authentication.getOpaqueId()}.</p>
-                        <div>{this.Authentication.isModerator() ? <p>I am currently a mod, and here's a special mod button <input value='mod button' type='button'/></p>  : 'I am currently not a mod.'}</div>
-                        <p>I have {this.Authentication.hasSharedId() ? `shared my ID, and my user_id is ${this.Authentication.getUserId()}` : 'not shared my ID'}.</p>
+                        <div id="logo-holder">{images.map(image => <a href={image.url} target="_blank" title={image.title}><img src={image.thumbnail_url} alt="" className="image"></img></a>)}</div>
                     </div>
                 </div>
             )
