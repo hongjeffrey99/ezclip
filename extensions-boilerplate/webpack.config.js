@@ -85,10 +85,6 @@ module.exports = (_env,argv)=> {
           options:{
             name:"img/[name].[ext]"
           }
-        },
-        {
-          test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader: 'file-loader'
         }
       ]
     },

@@ -134,8 +134,8 @@ export default class App extends React.Component{
 
 
                 //
-                let decoded = jwt.decode(auth.token);
-                this.twitch.rig.log(decoded);
+                // let decoded = jwt.decode(auth.token);
+                // this.twitch.rig.log(decoded);
 
                 if(!this.state.finishedLoading){
                     // if the component hasn't finished loading (as in we've not set up after getting a token), let's set it up now.
@@ -186,7 +186,7 @@ export default class App extends React.Component{
         return (
                 <div className="App">
                     <div className={this.state.theme === 'light' ? 'App-light' : 'App-dark'} >
-                        <h1><strong>{this.broadcasterName} clips!</strong></h1>
+                        <h1><strong>EZ</strong>clip</h1>
 
                         {/*
                           * BUG:
