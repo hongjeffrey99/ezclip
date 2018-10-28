@@ -42,7 +42,7 @@ export default class App extends React.Component{
         super(props)
         this.Authentication = new Authentication()
 
-        //if the extension is running on twitch or dev rig, set the shorthand here. otherwise, set to null. 
+        //if the extension is running on twitch or dev rig, set the shorthand here. otherwise, set to null.
         this.twitch = window.Twitch ? window.Twitch.ext : null
         this.state={
             finishedLoading:false,
@@ -152,7 +152,7 @@ export default class App extends React.Component{
 
             this.twitch.listen('broadcast',(target,contentType,body)=>{
                 this.twitch.rig.log(`New PubSub message!\n${target}\n${contentType}\n${body}`)
-                // now that you've got a listener, do something with the result... 
+                // now that you've got a listener, do something with the result...
 
                 // do something...
 
@@ -173,7 +173,7 @@ export default class App extends React.Component{
             this.twitch.unlisten('broadcast', ()=>console.log('successfully unlistened'))
         }
     }
-    
+
     render() {
         if(this.state.finishedLoading && this.state.isVisible){
             var images = [];
@@ -186,11 +186,10 @@ export default class App extends React.Component{
             return (
                 <div className="App">
                     <div className={this.state.theme === 'light' ? 'App-light' : 'App-dark'} >
-<<<<<<< HEAD
-                        <h1><strong>EZ</strong>clip</h1>
-=======
-                        <h2>EZclips!</h2>
->>>>>>> d7226611ab19a974f3f3b9602df71d55293b0f35
+
+                        <h2><span id="ez">EZ</span>clips{'\uD83D\uDC4F'}</h2>
+                        <div></div>
+                        {/*<img src="../../../assets/clap.png" alt="hi"></img>*/}
 
                         {/*
                           * BUG:
@@ -202,6 +201,8 @@ export default class App extends React.Component{
                           * Feel free to try it yourself.
                           */}
                         <div id="logo-holder">{images.map(image => <a href={image.url} target="_blank" title={image.title}><img src={image.thumbnail_url} alt="" className="image"></img></a>)}</div>
+
+                        <div id="ezclap"></div>
                     </div>
                 </div>
             )

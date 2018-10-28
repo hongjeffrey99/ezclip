@@ -4,41 +4,55 @@
 
 body {
 
-    background-color: rgb(110, 64, 194);
+    background-color: white;
     border-radius: 50px;
     overflow: visible;
 
 }
 
 .image {
-<<<<<<< HEAD
-
     width: 135px;
     margin: 1px;
-    border: 2px solid black;
+    border: 2px solid rgb(110, 64, 194);
     border-radius: 3px;
-
-=======
-    width: 135px;
-    border: 2px solid black;
-    margin: 1px;
-    border-radius: 2px;
->>>>>>> d7226611ab19a974f3f3b9602df71d55293b0f35
 }
 
 h2 {
     font-family: Verdana;
     color: white;
     text-align: center;
+    color: rgb(110, 64, 194);
+    font-size: 30px;
 
+
+}
+
+#ez {
+    color: rgb(79, 15, 160);
+    /* background-image: url('../../../assets/clap.png'); */
+}
+
+#ezclap {
+   background-image: url('../../../assets/clap.png');
+   background-size: 20px;
+   position: absolute;
+   top: 0px;
+   right: 15px;
+   height: 25px;
+   display: inline;
+}
+
+#ezclap.resize {
+  width: 30%;
+  height: auto;
 }
 
 .App-light{
     color:#232127;
+    position: relative;
 }
 
 .App-dark{
     color:#e5e3e8;
+    position: relative;
 }
-
-
