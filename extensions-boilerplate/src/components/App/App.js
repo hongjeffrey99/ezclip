@@ -1,9 +1,6 @@
 import React from 'react'
 import Authentication from '../../util/Authentication/Authentication'
 
-const jwt = require('jsonwebtoken')
-const clientId = "9r6z4p0jcomcdydex394t2rpnugsqy";
-
 import './App.css'
 
 /*  Taken from https://stackoverflow.com/a/5663611
@@ -12,6 +9,11 @@ import './App.css'
  *  Use supplied date object or, if no
  *  object supplied, return current time
  */
+const jwt = require('jsonwebtoken')
+const clientId = "9r6z4p0jcomcdydex394t2rpnugsqy";
+
+import './App.css'
+
 var dateToUTCString = (function () {
 
   // Add leading zero to single digit numbers
@@ -40,10 +42,12 @@ export default class App extends React.Component{
         super(props)
         this.Authentication = new Authentication()
 
-        //if the extension is running on twitch or dev rig, set the shorthand here. otherwise, set to null.
+        //if the extension is running on twitch or dev rig, set the shorthand here. otherwise, set to null. 
         this.twitch = window.Twitch ? window.Twitch.ext : null
         this.state={
             finishedLoading:false,
+            theme:'light',
+            isVisible:true,
             theme:'light' ,
             isVisible:true
         }
@@ -77,7 +81,6 @@ export default class App extends React.Component{
 
     componentDidMount(){
         if(this.twitch){
-            console.log('hi');
             this.twitch.onAuthorized((auth)=>{
                 this.Authentication.setToken(auth.token, auth.userId)
                 //this.twitch.rig.log(`This is the ID: ${auth.channelId}.`);
@@ -149,7 +152,7 @@ export default class App extends React.Component{
 
             this.twitch.listen('broadcast',(target,contentType,body)=>{
                 this.twitch.rig.log(`New PubSub message!\n${target}\n${contentType}\n${body}`)
-                // now that you've got a listener, do something with the result...
+                // now that you've got a listener, do something with the result... 
 
                 // do something...
 
@@ -162,31 +165,32 @@ export default class App extends React.Component{
             this.twitch.onContext((context,delta)=>{
                 this.contextUpdate(context,delta)
             })
-
         }
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         if(this.twitch){
             this.twitch.unlisten('broadcast', ()=>console.log('successfully unlistened'))
         }
     }
-
-    render(){
-
-      if(this.state.finishedLoading && this.state.isVisible){
-        var images = [];
-        if (this.clips.length) {
-          for (let clip of this.clips) {
-            images.push(clip);
-          }
-          //this.twitch.rig.log(this.clips.length);
-        }
-
-        return (
+    
+    render() {
+        if(this.state.finishedLoading && this.state.isVisible){
+            var images = [];
+            if (this.clips.length) {
+                for (let clip of this.clips) {
+                    images.push(clip);
+                }
+                //this.twitch.rig.log(this.clips.length);
+            }
+            return (
                 <div className="App">
                     <div className={this.state.theme === 'light' ? 'App-light' : 'App-dark'} >
+<<<<<<< HEAD
                         <h1><strong>EZ</strong>clip</h1>
+=======
+                        <h2>EZclips!</h2>
+>>>>>>> d7226611ab19a974f3f3b9602df71d55293b0f35
 
                         {/*
                           * BUG:
@@ -197,15 +201,7 @@ export default class App extends React.Component{
                           * image breaks the extension altogether.
                           * Feel free to try it yourself.
                           */}
-                        <div>{images.map(image => <a href={image.url} target="_blank"><img src={image.thumbnail_url} alt="" class="image"></img></a>)}</div>
-
-
-                        {/*}
-                        <p>My token is: {this.Authentication.state.token}</p>
-                        <p>My opaque ID is {this.Authentication.getOpaqueId()}.</p>
-                        <div>{this.Authentication.isModerator() ? <p>I am currently a mod, and here's a special mod button <input value='mod button' type='button'/></p>  : 'I am currently not a mod.'}</div>
-                        <p>I have {this.Authentication.hasSharedId() ? `shared my ID, and my user_id is ${this.Authentication.getUserId()}` : 'not shared my ID'}.</p>
-                        */}
+                        <div id="logo-holder">{images.map(image => <a href={image.url} target="_blank" title={image.title}><img src={image.thumbnail_url} alt="" className="image"></img></a>)}</div>
                     </div>
                 </div>
             )

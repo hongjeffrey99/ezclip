@@ -11,15 +11,22 @@ body {
 }
 
 .image {
+<<<<<<< HEAD
 
     width: 135px;
     margin: 1px;
     border: 2px solid black;
     border-radius: 3px;
 
+=======
+    width: 135px;
+    border: 2px solid black;
+    margin: 1px;
+    border-radius: 2px;
+>>>>>>> d7226611ab19a974f3f3b9602df71d55293b0f35
 }
 
-h1 {
+h2 {
     font-family: Verdana;
     color: white;
     text-align: center;
@@ -33,3 +40,5 @@ h1 {
 .App-dark{
     color:#e5e3e8;
 }
+
+
