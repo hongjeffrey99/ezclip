@@ -35,11 +35,6 @@ var dateToUTCString = (function () {
   }
 }());
 
-function formatAsRFC3339(s) {
-  var b = s.split(/[\/:]/);
-  return b[2] + b[1] + b[0] + 'T' + b[3] + b[4] + '00' + 'Z'
-}
-
 export default class App extends React.Component{
     constructor(props){
         super(props)
@@ -87,7 +82,7 @@ export default class App extends React.Component{
                 this.Authentication.setToken(auth.token, auth.userId)
                 //this.twitch.rig.log(`This is the ID: ${auth.channelId}.`);
 
-                let numClips = 5;
+                let numClips = 6;
 
                 // TODO: RESET TO CHANNEL_ID WHEN LAUNCH
                 // This is a manual test for Shroud
@@ -191,7 +186,7 @@ export default class App extends React.Component{
         return (
                 <div className="App">
                     <div className={this.state.theme === 'light' ? 'App-light' : 'App-dark'} >
-                        <h1>{this.broadcasterName} clips!</h1>
+                        <h1><strong>{this.broadcasterName} clips!</strong></h1>
 
                         {/*
                           * BUG:
@@ -202,7 +197,7 @@ export default class App extends React.Component{
                           * image breaks the extension altogether.
                           * Feel free to try it yourself.
                           */}
-                        <div>{images.map(image => <a href={image.url} target="_blank"><img src={image.thumbnail_url} alt="oops"></img></a>)}</div>
+                        <div>{images.map(image => <a href={image.url} target="_blank"><img src={image.thumbnail_url} alt="" class="image"></img></a>)}</div>
 
 
                         {/*}
